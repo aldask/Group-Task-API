@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using GroupsTask_API.Data;
 
 namespace GroupsTask_API
 {
@@ -13,6 +15,9 @@ namespace GroupsTask_API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseInMemoryDatabase("InMemoryDb"));
 
             var app = builder.Build();
 
