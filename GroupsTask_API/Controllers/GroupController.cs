@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using GroupsTask_API.Data;
+using GroupsTask_API.Models;
 
 namespace GroupsTask_API.Controllers
 {
@@ -29,6 +30,21 @@ namespace GroupsTask_API.Controllers
                 return NotFound("Group not found.");
 
             return Ok(group);
+        }
+
+        [HttpPost]
+        public IActionResult CreateGroup([FromBody] Group group)
+        {
+            if(string.IsNullOrEmpty(group.Title))
+            {
+                return BadRequest("Group title is required.");
+            }
+            else
+            {
+                _context.Groups.Add(group);
+                _context.SaveChanges();
+                return CreatedAtAction(nameof(GetGroup), new { id = group.Id }, group);
+            }
         }
     }
 }
