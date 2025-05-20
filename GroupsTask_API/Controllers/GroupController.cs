@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using GroupsTask_API.Data;
 using GroupsTask_API.Models;
 
@@ -23,9 +24,13 @@ namespace GroupsTask_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetGroup(int id)
+        public async Task<IActionResult> GetGroupAsync(int id)
         {
-            var group = _context.Groups.FirstOrDefault(g => g.Id == id);
+            var group = await _context.Groups
+                .Include(g => g.Members)
+                        .Include(g => g.Transactions)
+                        .ThenInclude(t => t.Splits)
+                        .FirstOrDefaultAsync(g => g.Id == id);
             if (group == null)
                 return NotFound("Group not found.");
 
@@ -35,7 +40,7 @@ namespace GroupsTask_API.Controllers
         [HttpPost]
         public IActionResult CreateGroup([FromBody] Group group)
         {
-            if(string.IsNullOrEmpty(group.Title))
+            if (string.IsNullOrEmpty(group.Title))
             {
                 return BadRequest("Group title is required.");
             }
@@ -43,7 +48,7 @@ namespace GroupsTask_API.Controllers
             {
                 _context.Groups.Add(group);
                 _context.SaveChanges();
-                return CreatedAtAction(nameof(GetGroup), new { id = group.Id }, group);
+                return CreatedAtAction(nameof(GetGroupAsync), new { id = group.Id }, group);
             }
         }
     }
