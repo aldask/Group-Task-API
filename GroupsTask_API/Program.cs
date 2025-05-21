@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using GroupsTask_API.Data;
 
 namespace GroupsTask_API
 {
@@ -14,6 +16,19 @@ namespace GroupsTask_API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseInMemoryDatabase("InMemoryDb"));
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -24,6 +39,8 @@ namespace GroupsTask_API
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowReactApp");
 
             app.UseAuthorization();
 
