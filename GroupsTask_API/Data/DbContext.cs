@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
+using GroupsTask_API.Models;
 
 namespace GroupsTask_API.Data
 {
@@ -7,6 +7,9 @@ namespace GroupsTask_API.Data
     {
         public AppDbContext(DbContextOptions options) : base(options) { }
 
-        public DbSet<Group> Groups { get; set; } 
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Member> Members { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<TransactionSplit> Splits { get; set; }
     }
 }
