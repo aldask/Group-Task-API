@@ -21,11 +21,11 @@ namespace GroupsTask_API
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowReactApp", policy =>
+                options.AddPolicy("AllowAllOrigins", policy =>
                 {
-                    policy.WithOrigins("http://localhost:5173")
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
                 });
             });
 
@@ -40,7 +40,7 @@ namespace GroupsTask_API
 
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowReactApp");
+            app.UseCors("AllowAllOrigins");
 
             app.UseAuthorization();
 
