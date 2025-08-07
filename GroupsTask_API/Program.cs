@@ -21,12 +21,11 @@ namespace GroupsTask_API
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", policy =>
+                options.AddPolicy("AllowAllOrigins", policy =>
                 {
                     policy.AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
-
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
                 });
             });
 
