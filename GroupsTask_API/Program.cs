@@ -40,7 +40,7 @@ namespace GroupsTask_API
 
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowReactApp");
+            app.UseCors("AllowAllOrigins");
 
             app.UseAuthorization();
 
